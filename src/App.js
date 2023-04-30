@@ -40,6 +40,12 @@
 // 2. return 오른쪽에 있는걸 array로 담아줌
 // 3. 첫번째 파라미터 el은 배열내 요소 하나하나임, 두번째는 i 0,1,2증가
 
+// * props
+// Modal컴포넌트는 App컴포넌트 밖에있어서 글제목 변수를 못씀
+// props로 받아야함 쓰는법은 <자식컴포넌트 작명={state이름}> 
+// 하고 자식컴포넌트(props)로 받아서 props.작명으로 사용
+// 부모 > 자식만 가능 역은 안됨
+
 import { useState } from 'react';
 import './App.css';
 
@@ -52,16 +58,6 @@ function App() {
   [1,2,3].map(function(a){
     console.log(a)
   })
-
-  function Modal(){
-    return (
-      <div className ="modal">
-        <h4>제목</h4>
-        <p>날짜</p>
-        <p>상세내용</p>
-      </div>
-    )
-  }
 
   return (
     <div className="App">
@@ -85,11 +81,20 @@ function App() {
         })
       }
       {
-        modal === true ? <Modal/> : null
+        modal === true ? <Modal color = 'yellow' 글제목={글제목}/> : null
       }
     </div>
   );
 }
-
+function Modal(props){
+  return (
+    <div className ="modal" style={{background: props.color}}>
+      <h4>{props.글제목[0]}</h4>
+      <p>날짜</p>
+      <p>상세내용</p>
+      <button>글수정</button>
+    </div>
+  )
+}
 
 export default App;
