@@ -44,7 +44,7 @@
 // Modal컴포넌트는 App컴포넌트 밖에있어서 글제목 변수를 못씀
 // props로 받아야함 쓰는법은 <자식컴포넌트 작명={state이름}> 
 // 하고 자식컴포넌트(props)로 받아서 props.작명으로 사용
-// 부모 > 자식만 가능 역은 안됨
+// 부모 > 자식만 가능 역은 성립x
 
 import { useState } from 'react';
 import './App.css';
@@ -69,27 +69,25 @@ function App() {
       {
         글제목.map((el,i) => {
           return(
-            <div className='list'>
-              <h4 onClick={() => {setModal(true)}}>{ el } <span onClick={() => {
-                let copy = [...따봉];
-                copy[i] = copy[i]+1;
-                set따봉(copy);
-              }}>👍</span> {따봉[i]}</h4>
+            <div className='list' key={i} i = {i}>
+              <h4 onClick={() => {setModal(true)}}>{ 글제목[i] } 
+              <span onClick={() => { 따봉변경(따봉+1) }}>👍</span> {따봉}</h4>
               <p>2월 18일 발행</p>
             </div>
           )
         })
       }
       {
-        modal === true ? <Modal color = 'yellow' 글제목={글제목}/> : null
+        modal ? <Modal color = 'whitesmoke' 글제목={글제목} set글제목={set글제목}/> : null
       }
     </div>
   );
 }
+
 function Modal(props){
   return (
     <div className ="modal" style={{background: props.color}}>
-      <h4>{props.글제목[0]}</h4>
+      <h4>{props.글제목[2]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
       <button>글수정</button>

@@ -4,6 +4,12 @@
 div { 
   box-sizing : border-box;
 }
+@font-face {
+  font-family: 'GeekbleMalang2WOFF2';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/GeekbleMalang2WOFF2.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 .list{
   padding-left : 20px;
   text-align : left;
