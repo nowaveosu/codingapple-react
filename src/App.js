@@ -12,6 +12,7 @@
 // 자주 변경될것 같은 html부분은 state로 만들기
 // state 변경할땐 state변수 등호로 재할당ㄴㄴ
 // set변경함수(새로운state) 를 쓸것
+// shift, splice 이런건 바로 setState함수에 넣으면 안됨. 넣고 그다음줄에 복사본 배열을 넣는방식
 
 // * onClick
 // 태그안에 onClick = {} 안에는 함수만 들어가야함
@@ -45,8 +46,23 @@
 // props로 받아야함 쓰는법은 <자식컴포넌트 작명={state이름}> 
 // 하고 자식컴포넌트(props)로 받아서 props.작명으로 사용
 // 부모 > 자식만 가능 역은 성립x
+// 되도록 최상위 컴포넌트에 state 작성
 
-import { useState } from 'react';
+// * input
+// input type은 정말다양함. 알아볼것
+// input에 뭔가 입력시 코드실행하고싶으면 onChange
+// onScroll={} onMouseOut 등 이벤트핸들러 30개정도 됨 필요하면 검색
+// input에 입력한 값 가져오는법
+// onChange = {(e)} 여기서 e는 지금 발생하는 이벤트와 관련됨
+// e.tartget은 이벤트 발생한 html태그
+// e.target.value 이벤트 발생한 html태그에 입력한 값
+// e.stopPropagation() 은 이벤트버블링 막을수있음
+
+// * class
+// 요즘은 컴포넌트 다 function으로 만드니 몰라도됨
+// class란 변수, 함수 보관함
+
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
@@ -55,6 +71,7 @@ function App() {
   let [따봉, set따봉] = useState([0,0,0]);
   let [modal, setModal] = useState(false);
   let [title, setTitle] = useState(0);
+  let [입력값, set입력값] = useState('');
 
   [1,2,3].map(function(a){
     console.log(a)
@@ -72,18 +89,33 @@ function App() {
           return(
             <div className='list' key={i} i = {i}>
               <h4 onClick={() => {setModal(true); setTitle(i)}}>{ 글제목[i] } 
-              <span onClick={() => { 따봉변경(따봉+1) }}>👍</span> {따봉}</h4>
+              <span onClick={() => { set따봉(따봉[i]+1) }}>👍</span> {따봉[i]}</h4>
               <p>2월 18일 발행</p>
+              <button onClick={() => {
+                let copy = [...글제목];
+                copy.splice(i,1);
+                set글제목(copy);
+              }}>삭제</button>
             </div>
           )
         })
       }
+      <div>
+        <input onChange={(e) => {set입력값(e.target.value); console.log(입력값)}} / >
+        <button onClick={() => {
+          let copy2 = [...글제목];
+          copy2.unshift(입력값);
+          set글제목(copy2);
+        }}>발행</button> 
+      </div>
+      
       {
         modal ? <Modal color = 'whitesmoke' title = {title} 글제목={글제목} set글제목={set글제목}/> : null
       }
+      <Modal2></Modal2>
     </div>
   );
-}
+};
 
 function Modal(props){
   return (
@@ -94,6 +126,25 @@ function Modal(props){
       <button>글수정</button>
     </div>
   )
+}
+
+class Modal2 extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+      name : 'kim',
+      age : 20
+    }
+  }
+  render(){
+    return(
+      <div>안녕 {this.state.age}
+        <button onClick={() => {
+          this.setState({age : 21})
+        }}>버튼</button>
+      </div>
+    )
+  }
 }
 
 export default App;
